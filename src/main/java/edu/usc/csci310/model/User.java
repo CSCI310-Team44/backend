@@ -1,4 +1,4 @@
-package edu.usc.csci310.entity;
+package edu.usc.csci310.model;
 
 import javax.persistence.*;
 

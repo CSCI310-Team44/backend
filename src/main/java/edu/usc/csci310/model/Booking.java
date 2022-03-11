@@ -1,4 +1,4 @@
-package edu.usc.csci310.entity;
+package edu.usc.csci310.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,7 +15,7 @@ public class Booking {
     @Column(name = "reccenterid", nullable = false)
     private Integer recCenterId;
     @Column(name = "timeslot", nullable = false)
-    private LocalDateTime timeSlot;
+    private LocalDateTime timeslot;
     @Column(name = "iswaitlist", nullable = false)
     private Boolean isWaitList;
 }

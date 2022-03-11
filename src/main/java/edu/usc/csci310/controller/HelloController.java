@@ -1,6 +1,6 @@
 package edu.usc.csci310.controller;
 
-import edu.usc.csci310.entity.User;
+import edu.usc.csci310.model.User;
 import edu.usc.csci310.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
