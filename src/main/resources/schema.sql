@@ -1,9 +1,10 @@
 CREATE TABLE users (
     userid BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR UNIQUE NOT NULL,
     password VARCHAR NOT NULL,
     fname VARCHAR NOT NULL,
     lname VARCHAR NOT NULL,
-    photopath VARCHAR NOT NULL
+    photopath VARCHAR
 );
 CREATE TABLE booking (
     bookingid BIGINT PRIMARY KEY AUTO_INCREMENT,
