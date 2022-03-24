@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +23,14 @@ public class VacancyService {
     private VacancyRepository vacancyRepository;
 
     /**
-     * Adds vacancy of given center at given date to database.
+     * Adds vacancy of a given center at a given date to database.
      * @param center
      * @param date
      */
     public void addVacancy(RecCenterData.Name center, LocalDate date) {
         RecCenterData.OperatingInfo info = RecCenterData.getOperatingInfo(center, date);
-        vacancyRepository.saveAll(getHourlyVacancy(info));
+        List<Vacancy> vacancies = getHourlyVacancies(info);
+        vacancyRepository.saveAll(vacancies);
     }
 
     /**
@@ -52,7 +52,14 @@ public class VacancyService {
         }
     }
 
-    private static List<Vacancy> getHourlyVacancy(RecCenterData.OperatingInfo operatingInfo) {
+    /**
+     * From a recreation center's operating info:
+     * open time, close time, numVacant,
+     * generate {@link Vacancy} entities for one day.
+     * @param operatingInfo
+     * @return
+     */
+    private static List<Vacancy> getHourlyVacancies(RecCenterData.OperatingInfo operatingInfo) {
         List<Vacancy> retVal = new ArrayList<>();
 
         LocalDateTime current = operatingInfo.open;

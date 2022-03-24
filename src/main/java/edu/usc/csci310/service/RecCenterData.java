@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class RecCenterData {
 
-    enum Name {
+    public enum Name {
         LYON_CENTER(0),
         VILLAGE_CENTER(1),
         HSC_CENTER(2);
@@ -66,7 +66,7 @@ public final class RecCenterData {
      * Operating information.
      */
     public static final class OperatingInfo {
-        public final RecCenterData.Name center;
+        public final Name center;
         public final LocalDateTime open;
         public final LocalDateTime close;
         public final int numVacant;
@@ -85,7 +85,7 @@ public final class RecCenterData {
      * @param date
      * @return List of operating hours in 1 hour interval.
      */
-    public static OperatingInfo getOperatingInfo(RecCenterData.Name center, LocalDate date) {
+    public static OperatingInfo getOperatingInfo(Name center, LocalDate date) {
         OH hours = OPERATING_HOURS.get(center)[date.getDayOfWeek().getValue()];
         int vacancy = NUM_VACANT.get(center);
         return new OperatingInfo(
