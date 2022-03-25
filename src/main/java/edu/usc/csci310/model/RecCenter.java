@@ -28,7 +28,7 @@ public class RecCenter {
         }
     };
 
-    private static RecCenter LYON_CENTER = new RecCenter(
+    private static final RecCenter LYON_CENTER = new RecCenter(
             "Lyon Center",
             Arrays.asList(
                     HourRange.LYONMF,
@@ -64,9 +64,9 @@ public class RecCenter {
         }
     }
 
-    private String name;
-    private List<List<LocalTime>> operatingHours;
-    private int vacancy;
+    private final String name;
+    private final List<List<LocalTime>> operatingHours;
+    private final int defaultVacancy;
 
     public String getName() {
         return name;
@@ -80,8 +80,8 @@ public class RecCenter {
         return operatingHours.get(date.getDayOfWeek().getValue() - 1);
     }
 
-    public int getVacancy() {
-        return vacancy;
+    public int getDefaultVacancy() {
+        return defaultVacancy;
     }
 
     /**
@@ -89,9 +89,9 @@ public class RecCenter {
      *
      * @param name Recreation center name.
      * @param hourRanges Operating hours for each day of the week
-     * @param vacancy Recreation center default vacancy.
+     * @param defaultVacancy Recreation center default vacancy.
      */
-    private RecCenter(String name, List<HourRange> hourRanges, int vacancy) {
+    private RecCenter(String name, List<HourRange> hourRanges, int defaultVacancy) {
         this.name = name;
 
         this.operatingHours = new ArrayList<>();
@@ -99,6 +99,6 @@ public class RecCenter {
             this.operatingHours.add(new DateTimeInflater(ea.open, ea.close).generate(3600));
         }
 
-        this.vacancy = vacancy;
+        this.defaultVacancy = defaultVacancy;
     }
 }

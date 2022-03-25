@@ -19,4 +19,9 @@ public interface VacancyRepository extends CrudRepository<Vacancy, Long> {
             LocalDateTime timeslot1,
             LocalDateTime timeslot2
     );
+
+    Vacancy findByRecCenterIdAndTimeslot(
+            Integer recCenterId,
+            LocalDateTime  timeslot
+    );
 }

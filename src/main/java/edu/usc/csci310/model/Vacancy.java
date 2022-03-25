@@ -10,8 +10,10 @@ public class Vacancy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vacancyid", nullable = false, unique = true)
     private Long vacancyId;
+
     @Column(name = "reccenterid", nullable = false)
     private Integer recCenterId;
+
     @Column(name = "timeslot", nullable = false)
     private LocalDateTime timeslot;
 

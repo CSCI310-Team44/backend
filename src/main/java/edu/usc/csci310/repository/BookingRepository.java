@@ -1,9 +1,8 @@
 package edu.usc.csci310.repository;
 
 import edu.usc.csci310.model.Booking;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface BookingRepository extends Repository<Booking, Long> {
-    Booking findByBookingId(Long bookingId);
-    Booking findByUserId(Long userId);
+public interface BookingRepository extends CrudRepository<Booking, Long> {
+
 }

@@ -23,13 +23,57 @@ public class VacancyService {
     private VacancyRepository vacancyRepository;
 
     /**
+     * Increments vacancy by 1 if it does not exceed center limit.
+     * Useful when a user has cancelled his booking.
+     *
+     * @param center
+     * @param dateTime
+     * @return 0 on success, -1 on failure
+     */
+    public int incrementVacancyIfNotFull(RecCenter.Name center, LocalDateTime dateTime) {
+        Vacancy vacancy = vacancyRepository.findByRecCenterIdAndTimeslot(
+                center.value, dateTime
+        );
+
+        int currentVacant = vacancy.getNumVacant();
+        if(currentVacant < RecCenter.getRecCenter(center).getDefaultVacancy()) {
+            vacancy.setNumVacant(currentVacant + 1);
+            vacancyRepository.save(vacancy);
+            return 0;
+        }
+        return -1;
+    }
+
+    /**
+     * Decrements vacancy by 1 if it does not reach negative vacancy.
+     * Useful when a user has made a new booking.
+     *
+     * @param center
+     * @param dateTime
+     * @return 0 on success, -1 on failure
+     */
+    public int decrementVacancyIfNotEmpty(RecCenter.Name center, LocalDateTime dateTime) {
+        Vacancy vacancy = vacancyRepository.findByRecCenterIdAndTimeslot(
+                center.value, dateTime
+        );
+
+        int currentVacant = vacancy.getNumVacant();
+        if(currentVacant > 0) {
+            vacancy.setNumVacant(currentVacant - 1);
+            vacancyRepository.save(vacancy);
+            return 0;
+        }
+        return -1;
+    }
+
+    /**
      * Adds to the database all vacancies of a recreation center
      * on given date.
      *
      * @param center {@code Enum} of center.
      * @param date Date to add.
      */
-    public void addVacancy(RecCenter.Name center, LocalDate date) {
+    public void addTimeslots(RecCenter.Name center, LocalDate date) {
         RecCenter recCenter = RecCenter.getRecCenter(center);
 
         for(LocalTime timeSlot : recCenter.getOperatingHoursOfDate(date)) {
@@ -38,7 +82,7 @@ public class VacancyService {
                     0L,
                     center.value,
                     LocalDateTime.of(date, timeSlot),
-                    recCenter.getVacancy()
+                    recCenter.getDefaultVacancy()
             );
 
             vacancyRepository.save(vacancy);
@@ -52,9 +96,9 @@ public class VacancyService {
      * (cron = SS MM HH dd ww yy)
      */
     @Scheduled(cron = "00 59 23 * * *")
-    public void scheduleAddVacancy() {
+    public void scheduleTimeslots() {
         for(var center : RecCenter.Name.values()) {
-            addVacancy(center, LocalDate.now().plusDays(SCHEDULE_IN_ADVANCE));
+            addTimeslots(center, LocalDate.now().plusDays(SCHEDULE_IN_ADVANCE));
             // TODO: Remove break once RecCenter has been completely implemented
             break;
         }

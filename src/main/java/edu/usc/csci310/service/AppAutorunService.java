@@ -35,7 +35,7 @@ public class AppAutorunService {
         LocalDate maxDate = toDate.plusDays(VacancyService.SCHEDULE_IN_ADVANCE);
         while(current.isBefore(maxDate)) {
             for(var center : RecCenter.Name.values()) {
-                vacancyService.addVacancy(center, current);
+                vacancyService.addTimeslots(center, current);
                 // TODO: Remove break once RecCenter has been completely implemented
                 break;
             }
