@@ -1,5 +1,6 @@
 package edu.usc.csci310.service;
 
+import edu.usc.csci310.model.RecCenter;
 import edu.usc.csci310.model.Vacancy;
 import edu.usc.csci310.repository.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,71 +10,53 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalTime;
 
 @Service
 @EnableScheduling
 public class VacancyService {
 
     // Schedule 3 days in advance
-    private static final int SCHEDULE_IN_ADVANCE = 3;
+    public static final int SCHEDULE_IN_ADVANCE = 3;
 
     @Autowired
     private VacancyRepository vacancyRepository;
 
     /**
-     * Adds vacancy of a given center at a given date to database.
-     * @param center
-     * @param date
+     * Adds to the database all vacancies of a recreation center
+     * on given date.
+     *
+     * @param center {@code Enum} of center.
+     * @param date Date to add.
      */
-    public void addVacancy(RecCenterData.Name center, LocalDate date) {
-        RecCenterData.OperatingInfo info = RecCenterData.getOperatingInfo(center, date);
-        List<Vacancy> vacancies = getHourlyVacancies(info);
-        vacancyRepository.saveAll(vacancies);
+    public void addVacancy(RecCenter.Name center, LocalDate date) {
+        RecCenter recCenter = RecCenter.getRecCenter(center);
+
+        for(LocalTime timeSlot : recCenter.getOperatingHoursOfDate(date)) {
+
+            Vacancy vacancy = new Vacancy(
+                    0L,
+                    center.value,
+                    LocalDateTime.of(date, timeSlot),
+                    recCenter.getVacancy()
+            );
+
+            vacancyRepository.save(vacancy);
+        }
     }
 
     /**
-     * Automatic scheduler. At 00:05:00 daily, adds all vacancies
-     * of all centers at date in advance.
+     * Automatic scheduler. At 23:59:00 daily, adds to the database
+     * all vacancies of all recreation centers at date in advance.
+     *
+     * (cron = SS MM HH dd ww yy)
      */
-    @Scheduled(cron = "00 05 00 * * *")
+    @Scheduled(cron = "00 59 23 * * *")
     public void scheduleAddVacancy() {
-        for(RecCenterData.Name center : RecCenterData.Name.values()) {
+        for(var center : RecCenter.Name.values()) {
             addVacancy(center, LocalDate.now().plusDays(SCHEDULE_IN_ADVANCE));
             // TODO: Remove break once RecCenter has been completely implemented
             break;
         }
-    }
-
-    public void populateDatabase() {
-        for(RecCenterData.Name center : RecCenterData.Name.values()) {
-            System.out.println(center);
-        }
-    }
-
-    /**
-     * From a recreation center's operating info:
-     * open time, close time, numVacant,
-     * generate {@link Vacancy} entities for one day.
-     * @param operatingInfo
-     * @return
-     */
-    private static List<Vacancy> getHourlyVacancies(RecCenterData.OperatingInfo operatingInfo) {
-        List<Vacancy> retVal = new ArrayList<>();
-
-        LocalDateTime current = operatingInfo.open;
-        while(current.isBefore(operatingInfo.close)) {
-            Vacancy vacancy = new Vacancy(
-                    (long)0,
-                    operatingInfo.center.value,
-                    current,
-                    operatingInfo.numVacant
-            );
-            retVal.add(vacancy);
-            current = current.plusHours(1);
-        }
-
-        return retVal;
     }
 }

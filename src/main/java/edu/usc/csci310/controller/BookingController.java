@@ -27,20 +27,20 @@ public class BookingController {
      *
      * @return csv string: hh:mm, #vacant, hh:mm, #vacant, ...
      */
-    @GetMapping("/api/booking/reccentervacancy")
-    public String getRecCenterVacancy(RecCenterData.Name name, String date) {
+    @GetMapping("/api/booking/vacancy")
+    public String getRecCenterVacancy(int name, String date) {
 
         // Query
         DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, dtfDate);
         List<Vacancy> vacancies = vacancyRepository.findByRecCenterIdAndTimeslotBetween(
-                name.value,
+                name,
                 LocalDateTime.of(localDate, LocalTime.of(0, 0)),
                 LocalDateTime.of(localDate, LocalTime.of(23, 59))
         );
 
         // Format
-        DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("hh:mm");
+        DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm");
         StringBuilder sb = new StringBuilder();
         for(Vacancy vac : vacancies) {
             sb.append(vac.getTimeslot().format(dtfTime));

@@ -16,10 +16,4 @@ public class HelloController {
     public String index() {
         return "Greetings from Spring Boot!";
     }
-
-    @GetMapping("/test1")
-    public String test1() {
-        User a = userRepo.findByUserId((long)1);
-        return a.getLname();
-    }
 }

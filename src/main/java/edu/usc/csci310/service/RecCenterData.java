@@ -5,12 +5,15 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Map;
 
+import static edu.usc.csci310.service.RecCenterData.OP_HOUR.*;
+
 /**
  * Recreation center data, such as
  * daily operating hours, vacancies.
  * <p>
  * Should contain only constants, and retrieval methods.
  */
+@Deprecated
 public final class RecCenterData {
 
     public enum Name {
@@ -28,7 +31,7 @@ public final class RecCenterData {
     /**
      * Daily operating hours. Stored as a time range.
      */
-    private enum OH {
+    enum OP_HOUR {
         CLOSED(0, 0, 0, 0),
         LYONMF(6, 0, 18, 0),
         LYONSS(10, 0, 17, 0);
@@ -36,7 +39,7 @@ public final class RecCenterData {
         public final LocalTime open;
         public final LocalTime close;
 
-        private OH(int hh1, int mm1, int hh2, int mm2) {
+        private OP_HOUR(int hh1, int mm1, int hh2, int mm2) {
             this.open = LocalTime.of(hh1, mm1);
             this.close = LocalTime.of(hh2, mm2);
         }
@@ -45,10 +48,10 @@ public final class RecCenterData {
     /**
      * Weekly operating hours.
      */
-    private static final Map<Name, OH[]> OPERATING_HOURS = Map.ofEntries(
+    private static final Map<Name, OP_HOUR[]> OPERATING_HOURS = Map.ofEntries(
             Map.entry(
                     Name.LYON_CENTER,
-                    new OH[]{OH.LYONMF, OH.LYONMF, OH.LYONMF, OH.LYONMF, OH.LYONMF, OH.LYONSS, OH.LYONSS}
+                    new OP_HOUR[]{LYONMF, LYONMF, LYONMF, LYONMF, LYONMF, OP_HOUR.LYONSS, OP_HOUR.LYONSS}
             )
     );
 
@@ -86,7 +89,7 @@ public final class RecCenterData {
      * @return List of operating hours in 1 hour interval.
      */
     public static OperatingInfo getOperatingInfo(Name center, LocalDate date) {
-        OH hours = OPERATING_HOURS.get(center)[date.getDayOfWeek().getValue()];
+        OP_HOUR hours = OPERATING_HOURS.get(center)[date.getDayOfWeek().getValue()];
         int vacancy = NUM_VACANT.get(center);
         return new OperatingInfo(
                 center,
