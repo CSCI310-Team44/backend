@@ -22,7 +22,7 @@ public class VacancyService {
     public static final int SCHEDULE_IN_ADVANCE = 3;
 
     @Autowired
-    private VacancyRepository vacancyRepository;
+    private VacancyRepository vr;
 
     /**
      * Increments vacancy by 1 if it does not exceed center limit.
@@ -33,14 +33,14 @@ public class VacancyService {
      * @return 0 on success, -1 on failure
      */
     public int incrementVacancyIfNotFull(int center, LocalDateTime dateTime) {
-        Vacancy vacancy = vacancyRepository.findByRecCenterIdAndTimeslot(
+        Vacancy vacancy = vr.findByRecCenterIdAndTimeslot(
                 center, dateTime
         );
 
         int currentVacant = vacancy.getNumVacant();
         if(currentVacant < RecCenter.getRecCenter(center).getDefaultVacancy()) {
             vacancy.setNumVacant(currentVacant + 1);
-            vacancyRepository.save(vacancy);
+            vr.save(vacancy);
             return 0;
         }
         return -1;
@@ -55,14 +55,14 @@ public class VacancyService {
      * @return 0 on success, -1 on failure
      */
     public int decrementVacancyIfNotEmpty(int center, LocalDateTime dateTime) {
-        Vacancy vacancy = vacancyRepository.findByRecCenterIdAndTimeslot(
+        Vacancy vacancy = vr.findByRecCenterIdAndTimeslot(
                 center, dateTime
         );
 
         int currentVacant = vacancy.getNumVacant();
         if(currentVacant > 0) {
             vacancy.setNumVacant(currentVacant - 1);
-            vacancyRepository.save(vacancy);
+            vr.save(vacancy);
             return 0;
         }
         return -1;
@@ -91,7 +91,7 @@ public class VacancyService {
                     recCenter.getDefaultVacancy()
             );
 
-            vacancyRepository.save(vacancy);
+            vr.save(vacancy);
         }
     }
 

@@ -1,9 +1,7 @@
 package edu.usc.csci310.service;
 
 import edu.usc.csci310.model.Booking;
-import edu.usc.csci310.model.RecCenter;
 import edu.usc.csci310.repository.BookingRepository;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +11,12 @@ import java.time.LocalDateTime;
 public class BookingService {
 
     @Autowired
-    private BookingRepository bookingRepository;
+    private BookingRepository br;
 
     @Autowired
-    private VacancyService vacancyService;
+    private NotificationService ns;
+    @Autowired
+    private VacancyService vs;
 
     public void addBooking(long userId, int center, LocalDateTime dateTime) {
 
@@ -27,16 +27,22 @@ public class BookingService {
                 dateTime,
                 false
         );
-        if(vacancyService.decrementVacancyIfNotEmpty(center, dateTime) == -1) {
+        if(vs.decrementVacancyIfNotEmpty(center, dateTime) == -1) {
             booking.setWaitList(true);
         }
-        bookingRepository.save(booking);
+        br.save(booking);
     }
 
-    public void removeBooking(long userId, int center, LocalDateTime dateTime) {
-        Booking tbDeleted = bookingRepository
+    public void deleteBooking(long userId, int center, LocalDateTime dateTime) {
+        Booking tbDeleted = br
                 .findByUserIdAndRecCenterIdAndTimeslot(userId, center, dateTime);
-        bookingRepository.delete(tbDeleted);
-        vacancyService.incrementVacancyIfNotFull(center, dateTime);
+
+        // If not wait-listed, increment vacancy and notify other users
+        if(!tbDeleted.isWaitList()) {
+            vs.incrementVacancyIfNotFull(center, dateTime);
+            ns.notifyVacancy(center, dateTime);
+        }
+
+        br.delete(tbDeleted);
     }
 }

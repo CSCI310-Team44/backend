@@ -34,10 +34,10 @@ public class SummaryController {
      * @param userId
      * @param center
      * @param dateTime yyyy-MM-dd HH:mm
-     * @return "Success"
+     * @return 1 on success, 0 on failure.
      */
     @GetMapping("delete")
-    public String deleteBooking(
+    public int deleteBooking(
             @RequestParam(value = "userid") long userId,
             int center,
             @RequestParam(value = "datetime") String dateTime
@@ -46,9 +46,9 @@ public class SummaryController {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dtf);
 
-        bs.removeBooking(userId, center, localDateTime);
+        bs.deleteBooking(userId, center, localDateTime);
 
-        return "Success";
+        return 1;
     }
 
     /**
@@ -72,14 +72,14 @@ public class SummaryController {
     }
 
     @GetMapping("/api/summary/previous")
-    public String getPreviousBooking(long userId) {
+    public String getPreviousBooking(long userid) {
         //todo get current time and parse
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime now = LocalDateTime.now();
         String dateTime= dtf.format(now);
         LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dtf);
 
-        List<Booking> book = br.findBookingByUserIdAndTimeslotBeforeAndIsWaitListFalse(userId, localDateTime);
+        List<Booking> book = br.findBookingByUserIdAndTimeslotBeforeAndIsWaitListFalse(userid, localDateTime);
         DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         StringBuilder sb = new StringBuilder();
         for(Booking vac : book) {
@@ -97,13 +97,13 @@ public class SummaryController {
     }
 
     @GetMapping("/api/summary/future")
-    public String getFutureBooking(long userId) {
+    public String getFutureBooking(long userid) {
         //todo get current time and parse
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime now = LocalDateTime.now();
         String dateTime= dtf.format(now);
         LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dtf);
-        List<Booking> book = br.findBookingByUserIdAndTimeslotAfter(userId, localDateTime);
+        List<Booking> book = br.findBookingByUserIdAndTimeslotAfter(userid, localDateTime);
         DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         StringBuilder sb = new StringBuilder();
         for(Booking vac : book) {
@@ -111,7 +111,7 @@ public class SummaryController {
             sb.append(",");
             sb.append(vac.getRecCenterId());
             sb.append(",");
-            sb.append(vac.getWaitList());
+            sb.append(vac.isWaitList());
             sb.append(",");
         }
         // Remove trailing comma

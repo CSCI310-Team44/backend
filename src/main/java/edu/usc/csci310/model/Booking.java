@@ -55,7 +55,7 @@ public class Booking {
         this.timeslot = timeslot;
     }
 
-    public Boolean getWaitList() {
+    public Boolean isWaitList() {
         return isWaitList;
     }
 
