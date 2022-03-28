@@ -48,6 +48,10 @@ public class RecCenter {
         return recCenters.get(center.value);
     }
 
+    public static RecCenter getRecCenter(int center) {
+        return recCenters.get(center);
+    }
+
     // ==================== RecCenter Impl ====================
 
     private enum HourRange {

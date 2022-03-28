@@ -2,7 +2,6 @@ package edu.usc.csci310.controller;
 
 import edu.usc.csci310.model.RecCenter;
 import edu.usc.csci310.model.Vacancy;
-import edu.usc.csci310.repository.BookingRepository;
 import edu.usc.csci310.repository.VacancyRepository;
 import edu.usc.csci310.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,21 +29,22 @@ public class BookingController {
      * @param center
      * @param date String, yyyy-MM-dd
      *
-     * @return csv string: hh:mm, #vacant, hh:mm, #vacant, ...
+     * @return csv string: HH:mm, #vacant, HH:mm, #vacant, ...
      */
     @GetMapping("/api/booking/vacancy")
     public String getRecCenterVacancy(int center, String date) {
 
-        // Query
+        // Convert date string to Java 8
         DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, dtfDate);
+        // Query vacancy for given date
         List<Vacancy> vacancies = vacancyRepository.findByRecCenterIdAndTimeslotBetween(
                 center,
                 LocalDateTime.of(localDate, LocalTime.of(0, 0)),
                 LocalDateTime.of(localDate, LocalTime.of(23, 59))
         );
 
-        // Format
+        // Format into CSV
         DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm");
         StringBuilder sb = new StringBuilder();
         for(Vacancy vac : vacancies) {
@@ -64,6 +64,7 @@ public class BookingController {
     @GetMapping("/api/booking/book")
     // TODO: Add JWT login validation
     public void bookRecCenter(long userId, int center, String dateTime) {
+        // Convert date string to Java 8
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dtf);
 
