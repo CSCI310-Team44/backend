@@ -1,7 +1,9 @@
 package edu.usc.csci310.controller;
 
+import edu.usc.csci310.model.Booking;
 import edu.usc.csci310.model.RecCenter;
 import edu.usc.csci310.model.Vacancy;
+import edu.usc.csci310.repository.BookingRepository;
 import edu.usc.csci310.repository.VacancyRepository;
 import edu.usc.csci310.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,22 +31,21 @@ public class BookingController {
      * @param center
      * @param date String, yyyy-MM-dd
      *
-     * @return csv string: HH:mm, #vacant, HH:mm, #vacant, ...
+     * @return csv string: hh:mm, #vacant, hh:mm, #vacant, ...
      */
     @GetMapping("/api/booking/vacancy")
     public String getRecCenterVacancy(int center, String date) {
 
-        // Convert date string to Java 8
+        // Query
         DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, dtfDate);
-        // Query vacancy for given date
         List<Vacancy> vacancies = vacancyRepository.findByRecCenterIdAndTimeslotBetween(
                 center,
                 LocalDateTime.of(localDate, LocalTime.of(0, 0)),
                 LocalDateTime.of(localDate, LocalTime.of(23, 59))
         );
 
-        // Format into CSV
+        // Format
         DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm");
         StringBuilder sb = new StringBuilder();
         for(Vacancy vac : vacancies) {
@@ -64,12 +65,63 @@ public class BookingController {
     @GetMapping("/api/booking/book")
     // TODO: Add JWT login validation
     public void bookRecCenter(long userId, int center, String dateTime) {
-        // Convert date string to Java 8
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dtf);
 
         RecCenter.Name centerName = RecCenter.Name.values()[center];
 
         bookingService.addBooking(userId, centerName, localDateTime);
+    }
+
+    @Autowired
+    BookingRepository br;
+
+    @GetMapping("/api/summary/previous")
+    public String getPreviousBooking(long userId) {
+        //todo get current time and parse
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime now = LocalDateTime.now();
+        String dateTime= dtf.format(now);
+        LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dtf);
+
+        List<Booking> book = br.findBookingByUserIdAndTimeslotBeforeAndIsWaitListFalse(userId, localDateTime);
+        DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        StringBuilder sb = new StringBuilder();
+        for(Booking vac : book) {
+            sb.append(vac.getTimeslot().format(dtfTime));
+            sb.append(",");
+            sb.append(vac.getRecCenterId());
+            sb.append(",");
+        }
+        // Remove trailing comma
+        if(sb.length() >= 1) {
+            sb.setLength(sb.length()-1);
+        }
+
+        return sb.toString();
+    }
+    @GetMapping("/api/summary/future")
+    public String getFutureBooking(long userId) {
+        //todo get current time and parse
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime now = LocalDateTime.now();
+        String dateTime= dtf.format(now);
+        LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dtf);
+        List<Booking> book = br.findBookingByUserIdAndTimeslotAfter(userId, localDateTime);
+        DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        StringBuilder sb = new StringBuilder();
+        for(Booking vac : book) {
+            sb.append(vac.getTimeslot().format(dtfTime));
+            sb.append(",");
+            sb.append(vac.getRecCenterId());
+            sb.append(",");
+            sb.append(vac.getWaitList());
+            sb.append(",");
+        }
+        // Remove trailing comma
+        if(sb.length() >= 1) {
+            sb.setLength(sb.length()-1);
+        }
+        return sb.toString();
     }
 }

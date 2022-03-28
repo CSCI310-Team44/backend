@@ -30,9 +30,9 @@ public class VacancyService {
      * @param dateTime
      * @return 0 on success, -1 on failure
      */
-    public int incrementVacancyIfNotFull(int center, LocalDateTime dateTime) {
+    public int incrementVacancyIfNotFull(RecCenter.Name center, LocalDateTime dateTime) {
         Vacancy vacancy = vacancyRepository.findByRecCenterIdAndTimeslot(
-                center, dateTime
+                center.value, dateTime
         );
 
         int currentVacant = vacancy.getNumVacant();
@@ -52,9 +52,9 @@ public class VacancyService {
      * @param dateTime
      * @return 0 on success, -1 on failure
      */
-    public int decrementVacancyIfNotEmpty(int center, LocalDateTime dateTime) {
+    public int decrementVacancyIfNotEmpty(RecCenter.Name center, LocalDateTime dateTime) {
         Vacancy vacancy = vacancyRepository.findByRecCenterIdAndTimeslot(
-                center, dateTime
+                center.value, dateTime
         );
 
         int currentVacant = vacancy.getNumVacant();
