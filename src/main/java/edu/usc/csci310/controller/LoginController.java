@@ -18,19 +18,20 @@ public class LoginController {
 
     @GetMapping("authenticate")
     public String loginRequest(
-            @RequestParam(value = "username") String username,
+            @RequestParam(value = "userid") long userid,
             @RequestParam(value = "password") String password
     ) {
-        System.out.println("Requesting with username: "+username);
-        User user = ur.findByUsername(username);
+        System.out.println("Requesting with userid / Net ID: "+userid);
+        User user = ur.findByUserId(userid);
         if(user == null){
             System.out.println("user not found");
+            return "User Not Found";
         }
         if(password.equals(user.getPassword())) {
             return "Success";
         }
         else {
-            return "Fail";
+            return "Invalid Password";
         }
     }
 }
