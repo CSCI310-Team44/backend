@@ -105,8 +105,6 @@ public class VacancyService {
     public void scheduleTimeslots() {
         for(var center : RecCenter.Name.values()) {
             addTimeslots(center, LocalDate.now().plusDays(SCHEDULE_IN_ADVANCE));
-            // TODO: Remove break once RecCenter has been completely implemented
-            break;
         }
     }
 }

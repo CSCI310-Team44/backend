@@ -31,18 +31,44 @@ public class RecCenter {
     private static final RecCenter LYON_CENTER = new RecCenter(
             "Lyon Center",
             Arrays.asList(
-                    HourRange.LYONMF,
-                    HourRange.LYONMF,
-                    HourRange.LYONMF,
-                    HourRange.LYONMF,
-                    HourRange.LYONMF,
-                    HourRange.LYONSS,
-                    HourRange.LYONSS),
+                    HourRange.LYOMF,
+                    HourRange.LYOMF,
+                    HourRange.LYOMF,
+                    HourRange.LYOMF,
+                    HourRange.LYOMF,
+                    HourRange.LYOSS,
+                    HourRange.LYOSS),
+            50
+    );
+
+    private static final RecCenter VILLAGE_CENTER = new RecCenter(
+            "Lyon Center",
+            Arrays.asList(
+                    HourRange.VLGMF,
+                    HourRange.VLGMF,
+                    HourRange.VLGMF,
+                    HourRange.VLGMF,
+                    HourRange.VLGMF,
+                    HourRange.VLGSS,
+                    HourRange.VLGSS),
+            50
+    );
+
+    private static final RecCenter HSC_CENTER = new RecCenter(
+            "Lyon Center",
+            Arrays.asList(
+                    HourRange.HSCMF,
+                    HourRange.HSCMF,
+                    HourRange.HSCMF,
+                    HourRange.HSCMF,
+                    HourRange.HSCMF,
+                    HourRange.HSCSA,
+                    HourRange.CLOSED),
             50
     );
 
     private static final List<RecCenter> recCenters = Arrays.asList(
-            LYON_CENTER);
+            LYON_CENTER, VILLAGE_CENTER, HSC_CENTER);
 
     public static RecCenter getRecCenter(RecCenter.Name center) {
         return recCenters.get(center.value);
@@ -56,8 +82,12 @@ public class RecCenter {
 
     private enum HourRange {
         CLOSED(0, 0, 0, 0),
-        LYONMF(6, 0, 22, 0),
-        LYONSS(10, 0, 17, 0);
+        LYOMF(6, 0, 22, 0),
+        LYOSS(10, 0, 18, 30),
+        VLGMF(11, 0, 11, 59),
+        VLGSS(15, 0, 21, 15),
+        HSCMF(6, 0, 21, 0),
+        HSCSA(9, 0, 13, 0);
 
         public final LocalTime open;
         public final LocalTime close;
