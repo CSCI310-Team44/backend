@@ -49,7 +49,7 @@ public class SummaryController {
 
         bs.deleteBooking(userId, center, localDateTime);
 
-        return "Success111";
+        return "Success";
     }
 
     /**
