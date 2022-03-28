@@ -28,7 +28,7 @@ public class AppAutorunService {
      * !!! REMOVE IF USING PERSISTING DATABASE !!!
      */
     @EventListener(ApplicationReadyEvent.class)
-    public void populateVacacncyToday() {
+    public void populateVacancyToday() {
         LocalDate toDate = LocalDate.now();
 
         LocalDate current = toDate;
