@@ -1,5 +1,6 @@
 package edu.usc.csci310.service;
 
+import edu.usc.csci310.model.Booking;
 import edu.usc.csci310.model.RecCenter;
 import edu.usc.csci310.model.Vacancy;
 import edu.usc.csci310.repository.VacancyRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 @EnableScheduling
@@ -64,6 +66,10 @@ public class VacancyService {
             return 0;
         }
         return -1;
+    }
+
+    public List<Booking> findAvailableSlotInWaitList(long userId) {
+        return null;
     }
 
     /**

@@ -1,11 +1,13 @@
 package edu.usc.csci310.controller;
 
-import edu.usc.csci310.model.RecCenter;
+import edu.usc.csci310.model.Booking;
 import edu.usc.csci310.model.Vacancy;
+import edu.usc.csci310.repository.BookingRepository;
 import edu.usc.csci310.repository.VacancyRepository;
 import edu.usc.csci310.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
@@ -15,30 +17,30 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/booking/")
 public class BookingController {
 
     @Autowired
-    VacancyRepository vacancyRepository;
+    VacancyRepository vr;
 
     @Autowired
-    BookingService bookingService;
+    BookingService bs;
 
     /**
      * Returns vacancy of given recreation center, at given date.
      *
      * @param center
-     * @param date String, yyyy-MM-dd
-     *
-     * @return csv string: HH:mm, #vacant, HH:mm, #vacant, ...
+     * @param date yyyy-MM-dd
+     * @return csv HH:mm, numVacant, HH:mm, numVacant, ...
      */
-    @GetMapping("/api/booking/vacancy")
+    @GetMapping("vacancy")
     public String getRecCenterVacancy(int center, String date) {
 
         // Convert date string to Java 8
         DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, dtfDate);
         // Query vacancy for given date
-        List<Vacancy> vacancies = vacancyRepository.findByRecCenterIdAndTimeslotBetween(
+        List<Vacancy> vacancies = vr.findByRecCenterIdAndTimeslotBetween(
                 center,
                 LocalDateTime.of(localDate, LocalTime.of(0, 0)),
                 LocalDateTime.of(localDate, LocalTime.of(23, 59))
@@ -61,15 +63,20 @@ public class BookingController {
         return sb.toString();
     }
 
-    @GetMapping("/api/booking/book")
+    /**
+     * Adds new booking to DB.
+     *
+     * @param userId
+     * @param center
+     * @param dateTime yyyy-MM-dd HH:mm
+     */
+    @GetMapping("book")
     // TODO: Add JWT login validation
     public void bookRecCenter(long userId, int center, String dateTime) {
         // Convert date string to Java 8
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dtf);
 
-        RecCenter.Name centerName = RecCenter.Name.values()[center];
-
-        bookingService.addBooking(userId, centerName, localDateTime);
+        bs.addBooking(userId, center, localDateTime);
     }
 }

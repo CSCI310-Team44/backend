@@ -8,6 +8,16 @@ import java.util.List;
 
 public interface BookingRepository extends CrudRepository<Booking, Long> {
 
+    List<Booking> findBookingByUserIdAndTimeslotBeforeAndIsWaitListFalse(
+            Long userId,
+            LocalDateTime timeSlot
+    );
+
+    List<Booking> findBookingByUserIdAndTimeslotAfter(
+            Long userId,
+            LocalDateTime timeSlot
+    );
+
     Booking findByUserIdAndRecCenterIdAndTimeslot(
             Long userId,
             Integer recCenterId,

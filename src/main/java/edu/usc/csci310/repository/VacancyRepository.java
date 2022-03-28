@@ -1,6 +1,7 @@
 package edu.usc.csci310.repository;
 
 import edu.usc.csci310.model.Vacancy;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.time.LocalDateTime;
@@ -23,5 +24,19 @@ public interface VacancyRepository extends CrudRepository<Vacancy, Long> {
     Vacancy findByRecCenterIdAndTimeslot(
             Integer recCenterId,
             LocalDateTime  timeslot
+    );
+
+    /**
+     * Selects all available vacancies where given
+     * user's has a wait-listed booking.
+     */
+    @Query(
+            value = "SELECT * FROM VACANCY v " +
+                    "INNER JOIN BOOKING b " +
+                    "ON b.reccenterid = v.reccenterid AND b.timeslot = v.timeslot " +
+                    "WHERE b.userid = ?1 AND v.numvacant > 0 AND b.timeslot > current_timestamp ",
+            nativeQuery = true)
+    List<Vacancy> findUserWaitListBecomesAvailable(
+            Long userId
     );
 }
