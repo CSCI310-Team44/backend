@@ -37,7 +37,7 @@ public class SummaryController {
      * @return 1 on success, 0 on failure.
      */
     @GetMapping("delete")
-    public int deleteBooking(
+    public String deleteBooking(
             @RequestParam(value = "userid") long userId,
             int center,
             @RequestParam(value = "datetime") String dateTime
@@ -48,7 +48,7 @@ public class SummaryController {
 
         bs.deleteBooking(userId, center, localDateTime);
 
-        return 1;
+        return "Success";
     }
 
     /**
