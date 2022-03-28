@@ -1,9 +1,9 @@
 INSERT INTO users (userid, username, password, fname, lname, photopath)
-VALUES (1, 'mredekopp', 'password', 'mark', 'redekopp', 'C:\\users');
+VALUES (1, '001122334455', 'password', 'mark', 'redekopp', 'C:\\users');
 INSERT INTO users (userid, username, password, fname, lname, photopath)
-VALUES (2, 'ttrojan', 'password', 'tommy', 'trojan', 'C:\\users');
+VALUES (2, '1234567890', 'password', 'tommy', 'trojan', 'C:\\users');
 INSERT INTO users (userid, username, password, fname, lname, photopath)
-VALUES (3, 'zx99', 'password', 'billy', 'bruin', 'C:\\users');
+VALUES (3, '3333344444', 'password', 'billy', 'bruin', 'C:\\users');
 
 INSERT INTO booking (bookingid, userid, reccenterid, timeslot, iswaitlist)
 VALUES (1, 1, 1, '1997-12-31 10:00:00', false);

@@ -59,7 +59,8 @@ public class BookingController {
         if(sb.length() >= 1) {
             sb.setLength(sb.length()-1);
         }
-
+//        System.out.println(sb.toString());
+//        sb.append("aaa");
         return sb.toString();
     }
 
