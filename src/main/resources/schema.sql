@@ -6,6 +6,7 @@ CREATE TABLE users (
     lname VARCHAR NOT NULL,
     photopath VARCHAR
 );
+
 CREATE TABLE booking (
     bookingid BIGINT PRIMARY KEY AUTO_INCREMENT,
     userid BIGINT NOT NULL,

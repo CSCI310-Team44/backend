@@ -71,7 +71,7 @@ public class SummaryController {
         return new ArrayList<>();
     }
 
-    @GetMapping("/api/summary/previous")
+    @GetMapping("previous")
     public String getPreviousBooking(long userid) {
         //todo get current time and parse
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -96,7 +96,7 @@ public class SummaryController {
         return sb.toString();
     }
 
-    @GetMapping("/api/summary/future")
+    @GetMapping("future")
     public String getFutureBooking(long userid) {
         //todo get current time and parse
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
