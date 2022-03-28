@@ -36,8 +36,6 @@ public class AppAutorunService {
         while(current.isBefore(maxDate)) {
             for(var center : RecCenter.Name.values()) {
                 vacancyService.addTimeslots(center, current);
-                // TODO: Remove break once RecCenter has been completely implemented
-                break;
             }
             current = current.plusDays(1);
         }
