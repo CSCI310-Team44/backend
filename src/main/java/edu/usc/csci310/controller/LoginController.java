@@ -26,12 +26,11 @@ public class LoginController {
         if(user == null){
             System.out.println("user not found");
         }
-        return "Success";
-//        if(password.equals(user.getPassword())) {
-//            return "Success";
-//        }
-//        else {
-//            return "Fail";
-//        }
+        if(password.equals(user.getPassword())) {
+            return "Success";
+        }
+        else {
+            return "Fail";
+        }
     }
 }

@@ -10,13 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/summary/")
 public class SummaryController {
 
@@ -34,7 +35,7 @@ public class SummaryController {
      * @param userId
      * @param center
      * @param dateTime yyyy-MM-dd HH:mm
-     * @return "Success"
+     * @return 1 on success, 0 on failure.
      */
     @GetMapping("delete")
     public String deleteBooking(
@@ -46,7 +47,7 @@ public class SummaryController {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dtf);
 
-        bs.removeBooking(userId, center, localDateTime);
+        bs.deleteBooking(userId, center, localDateTime);
 
         return "Success";
     }
@@ -71,15 +72,15 @@ public class SummaryController {
         return new ArrayList<>();
     }
 
-    @GetMapping("/api/summary/previous")
-    public String getPreviousBooking(long userId) {
+    @GetMapping("previous")
+    public String getPreviousBooking(long userid) {
         //todo get current time and parse
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime now = LocalDateTime.now();
         String dateTime= dtf.format(now);
         LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dtf);
 
-        List<Booking> book = br.findBookingByUserIdAndTimeslotBeforeAndIsWaitListFalse(userId, localDateTime);
+        List<Booking> book = br.findBookingByUserIdAndTimeslotBeforeAndIsWaitListFalse(userid, localDateTime);
         DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         StringBuilder sb = new StringBuilder();
         for(Booking vac : book) {
@@ -96,14 +97,14 @@ public class SummaryController {
         return sb.toString();
     }
 
-    @GetMapping("/api/summary/future")
-    public String getFutureBooking(long userId) {
+    @GetMapping("future")
+    public String getFutureBooking(long userid) {
         //todo get current time and parse
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime now = LocalDateTime.now();
         String dateTime= dtf.format(now);
         LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dtf);
-        List<Booking> book = br.findBookingByUserIdAndTimeslotAfter(userId, localDateTime);
+        List<Booking> book = br.findBookingByUserIdAndTimeslotAfter(userid, localDateTime);
         DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         StringBuilder sb = new StringBuilder();
         for(Booking vac : book) {
@@ -111,7 +112,7 @@ public class SummaryController {
             sb.append(",");
             sb.append(vac.getRecCenterId());
             sb.append(",");
-            sb.append(vac.getWaitList());
+            sb.append(vac.isWaitList());
             sb.append(",");
         }
         // Remove trailing comma

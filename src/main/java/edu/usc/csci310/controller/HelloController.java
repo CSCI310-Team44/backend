@@ -1,6 +1,5 @@
 package edu.usc.csci310.controller;
 
-import edu.usc.csci310.model.User;
 import edu.usc.csci310.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +21,8 @@ public class HelloController {
         return "Greetings from Spring Boot!";
     }
 
+    // SSE
+    // https://www.baeldung.com/spring-server-sent-events
     @GetMapping("/stream-sse-mvc")
     public SseEmitter streamSseMvc() {
         SseEmitter emitter = new SseEmitter(-1L);
@@ -34,7 +35,7 @@ public class HelloController {
                             .id(String.valueOf(i))
                             .name("sse event - mvc");
                     emitter.send(event);
-                    Thread.sleep(1000);
+                    Thread.sleep(10000);
                 }
             } catch (Exception ex) {
                 emitter.completeWithError(ex);
