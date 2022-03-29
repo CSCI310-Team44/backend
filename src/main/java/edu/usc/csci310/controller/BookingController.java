@@ -30,15 +30,15 @@ public class BookingController {
      * Returns vacancy of given recreation center, at given date.
      *
      * @param center
-     * @param date yyyy-MM-dd
+     * @param datetime yyyy-MM-dd
      * @return csv HH:mm, numVacant, HH:mm, numVacant, ...
      */
     @GetMapping("vacancy")
-    public String getRecCenterVacancy(int center, String date) {
+    public String getRecCenterVacancy(int center, String datetime) {
 
         // Convert date string to Java 8
         DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(date, dtfDate);
+        LocalDate localDate = LocalDate.parse(datetime, dtfDate);
         // Query vacancy for given date
         List<Vacancy> vacancies = vr.findByRecCenterIdAndTimeslotBetween(
                 center,
@@ -67,17 +67,17 @@ public class BookingController {
     /**
      * Adds new booking to DB.
      *
-     * @param userId
+     * @param userid
      * @param center
-     * @param dateTime yyyy-MM-dd HH:mm
+     * @param datetime yyyy-MM-dd HH:mm
      */
     @GetMapping("book")
     // TODO: Add JWT login validation
-    public void bookRecCenter(long userId, int center, String dateTime) {
+    public String bookRecCenter(long userid, int center, String datetime) {
         // Convert date string to Java 8
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime localDateTime = LocalDateTime.parse(dateTime, dtf);
-
-        bs.addBooking(userId, center, localDateTime);
+        LocalDateTime localDateTime = LocalDateTime.parse(datetime, dtf);
+        bs.addBooking(userid, center, localDateTime);
+        return "Success";
     }
 }

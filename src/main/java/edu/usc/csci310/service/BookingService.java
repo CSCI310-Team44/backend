@@ -27,6 +27,9 @@ public class BookingService {
                 dateTime,
                 false
         );
+        System.out.println(booking.getUserId());
+        System.out.println(center);
+        System.out.println(dateTime);
         if(vs.decrementVacancyIfNotEmpty(center, dateTime) == -1) {
             booking.setWaitList(true);
         }

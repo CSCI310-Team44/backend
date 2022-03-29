@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 @Table(name = "booking")
 public class Booking {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bookingid", nullable = false, unique = true)
     private Long bookingId;
 
