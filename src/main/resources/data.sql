@@ -14,6 +14,10 @@ INSERT INTO booking (bookingid, userid, reccenterid, timeslot, iswaitlist)
 VALUES (3, 1000000002, 1, '1998-01-01 10:00:00', false);
 INSERT INTO booking (bookingid, userid, reccenterid, timeslot, iswaitlist)
 VALUES (4, 1000000002, 2, '1998-01-02 10:00:00', false);
+INSERT INTO booking (bookingid, userid, reccenterid, timeslot, iswaitlist)
+VALUES (5, 1000000001, 2, '2022-3-30 14:00:00', false);
+INSERT INTO booking (bookingid, userid, reccenterid, timeslot, iswaitlist)
+VALUES (6, 1000000002, 2, '2022-3-30 14:00:00', true);
 
 INSERT INTO vacancy (vacancyid, reccenterid, timeslot, numvacant)
 VALUES (1, 1, '1997-12-31 10:00:00', 0);

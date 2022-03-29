@@ -37,7 +37,7 @@ public class NotificationService {
      */
     public void addNotifier(long userId, SseEmitter emitter) {
         lock.lock();
-        userNotifier.putIfAbsent(userId, emitter);
+        userNotifier.put(userId, emitter);
         lock.unlock();
     }
 
