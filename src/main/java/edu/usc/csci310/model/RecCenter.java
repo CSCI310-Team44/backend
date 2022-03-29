@@ -42,7 +42,7 @@ public class RecCenter {
     );
 
     private static final RecCenter VILLAGE_CENTER = new RecCenter(
-            "Lyon Center",
+            "Village Center",
             Arrays.asList(
                     HourRange.VLGMF,
                     HourRange.VLGMF,
@@ -55,7 +55,7 @@ public class RecCenter {
     );
 
     private static final RecCenter HSC_CENTER = new RecCenter(
-            "Lyon Center",
+            "HSC Center",
             Arrays.asList(
                     HourRange.HSCMF,
                     HourRange.HSCMF,
@@ -84,7 +84,7 @@ public class RecCenter {
         CLOSED(0, 0, 0, 0),
         LYOMF(6, 0, 22, 0),
         LYOSS(10, 0, 18, 30),
-        VLGMF(11, 0, 11, 59),
+        VLGMF(11, 0, 23, 59),
         VLGSS(15, 0, 21, 15),
         HSCMF(6, 0, 21, 0),
         HSCSA(9, 0, 13, 0);

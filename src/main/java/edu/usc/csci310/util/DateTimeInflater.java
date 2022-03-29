@@ -1,6 +1,7 @@
 package edu.usc.csci310.util;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
@@ -23,7 +24,10 @@ public class DateTimeInflater<D extends Temporal> {
         List<D> lldt = new ArrayList<>();
 
         D current = begin;
-        while(current.until(end, ChronoUnit.SECONDS) > 0) {
+
+        long difference = current.until(end, ChronoUnit.SECONDS);
+
+        for(int i = 0; i < difference; i += interval) {
             lldt.add(current);
             current = (D) current.plus(interval, ChronoUnit.SECONDS);
         }
