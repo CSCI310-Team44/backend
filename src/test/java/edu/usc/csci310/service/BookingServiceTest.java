@@ -1,14 +1,13 @@
 package edu.usc.csci310.service;
 
 import edu.usc.csci310.model.Booking;
-import edu.usc.csci310.model.RecCenter;
 import edu.usc.csci310.model.Vacancy;
 import edu.usc.csci310.repository.BookingRepository;
 import edu.usc.csci310.repository.VacancyRepository;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +17,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
+// Transactional WILL NOT work on static methods
 @Transactional
 public class BookingServiceTest {
 
@@ -36,10 +34,8 @@ public class BookingServiceTest {
     static LocalDateTime maxDateTime = LocalDateTime.of(testDate, LocalTime.of(11, 0));
     static LocalDateTime zeroDateTime = LocalDateTime.of(testDate, LocalTime.of(12, 0));
 
-    @BeforeAll
-    public static void init(
-            @Autowired VacancyRepository vr
-    ) {
+    @BeforeEach
+    public void init() {
         Vacancy vacancyFull = new Vacancy(
                 (long)0,
                 0,

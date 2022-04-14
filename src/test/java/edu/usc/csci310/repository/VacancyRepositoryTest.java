@@ -3,6 +3,7 @@ package edu.usc.csci310.repository;
 import edu.usc.csci310.model.Booking;
 import edu.usc.csci310.model.Vacancy;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,10 +27,8 @@ public class VacancyRepositoryTest {
 
     static LocalDate testingDate = LocalDate.of(2095, 12, 31);
 
-    @BeforeAll
-    public static void init(
-            @Autowired VacancyRepository vr
-    ) {
+    @BeforeEach
+    public void init() {
         Vacancy vacancy1 = new Vacancy(
                 (long)0,
                 0,

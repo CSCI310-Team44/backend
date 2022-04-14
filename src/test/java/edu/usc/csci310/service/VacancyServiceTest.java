@@ -4,6 +4,7 @@ import edu.usc.csci310.model.RecCenter;
 import edu.usc.csci310.model.Vacancy;
 import edu.usc.csci310.repository.VacancyRepository;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
@@ -35,10 +36,8 @@ public class VacancyServiceTest {
     static LocalDateTime maxDateTime = LocalDateTime.of(testDate, LocalTime.of(11, 0));
     static LocalDateTime zeroDateTime = LocalDateTime.of(testDate, LocalTime.of(12, 0));
 
-    @BeforeAll
-    public static void init(
-            @Autowired VacancyRepository vr
-    ) {
+    @BeforeEach
+    public void init() {
         Vacancy vacancyMax = new edu.usc.csci310.model.Vacancy(
                 (long)0,
                 0,

@@ -2,6 +2,7 @@ package edu.usc.csci310.repository;
 
 import edu.usc.csci310.model.Booking;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class BookingRepositoryTest {
     static LocalDate pastDate = LocalDate.of(1997, 12, 31);
     static LocalDate futureDate = LocalDate.of(2097, 12, 31);
 
-    @BeforeAll
-    public static void init(@Autowired BookingRepository br) {
+    @BeforeEach
+    public void init() {
         Booking pastok1 = new Booking(
                 (long)0,
                 (long)1_000_000_001,
