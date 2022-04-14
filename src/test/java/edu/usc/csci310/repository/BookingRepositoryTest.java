@@ -86,7 +86,7 @@ public class BookingRepositoryTest {
                 (long)1_000_000_001,
                 LocalDateTime.now()
         );
-        assertEquals(1, bookings.size());
+        assertEquals(3, bookings.size());
     }
 
     /**
