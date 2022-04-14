@@ -38,7 +38,7 @@ public class RecCenter {
                     HourRange.LYOMF,
                     HourRange.LYOSS,
                     HourRange.LYOSS),
-            50
+            5
     );
 
     private static final RecCenter VILLAGE_CENTER = new RecCenter(
@@ -51,7 +51,7 @@ public class RecCenter {
                     HourRange.VLGMF,
                     HourRange.VLGSS,
                     HourRange.VLGSS),
-            50
+            10
     );
 
     private static final RecCenter HSC_CENTER = new RecCenter(
@@ -64,7 +64,7 @@ public class RecCenter {
                     HourRange.HSCMF,
                     HourRange.HSCSA,
                     HourRange.CLOSED),
-            50
+            3
     );
 
     private static final List<RecCenter> recCenters = Arrays.asList(

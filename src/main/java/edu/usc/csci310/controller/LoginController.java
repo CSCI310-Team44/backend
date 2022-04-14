@@ -21,10 +21,10 @@ public class LoginController {
             @RequestParam(value = "userid") long userid,
             @RequestParam(value = "password") String password
     ) {
-        System.out.println("Requesting with userid / Net ID: "+userid);
+        //System.out.println("Requesting with userid / Net ID: "+userid);
         User user = ur.findByUserId(userid);
         if(user == null){
-            System.out.println("user not found");
+            //System.out.println("user not found");
             return "User Not Found";
         }
         if(password.equals(user.getPassword())) {

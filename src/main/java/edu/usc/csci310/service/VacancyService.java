@@ -32,7 +32,7 @@ public class VacancyService {
      * @param dateTime
      * @return 0 on success, -1 on failure
      */
-    public int incrementVacancyIfNotFull(int center, LocalDateTime dateTime) {
+    public int incrementVacancyIfNotMax(int center, LocalDateTime dateTime) {
         Vacancy vacancy = vr.findByRecCenterIdAndTimeslot(
                 center, dateTime
         );
@@ -54,7 +54,7 @@ public class VacancyService {
      * @param dateTime
      * @return 0 on success, -1 on failure
      */
-    public int decrementVacancyIfNotEmpty(int center, LocalDateTime dateTime) {
+    public int decrementVacancyIfNotZero(int center, LocalDateTime dateTime) {
         Vacancy vacancy = vr.findByRecCenterIdAndTimeslot(
                 center, dateTime
         );

@@ -1,8 +1,6 @@
 package edu.usc.csci310.controller;
 
-import edu.usc.csci310.model.Booking;
 import edu.usc.csci310.model.Vacancy;
-import edu.usc.csci310.repository.BookingRepository;
 import edu.usc.csci310.repository.VacancyRepository;
 import edu.usc.csci310.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +57,6 @@ public class BookingController {
         if(sb.length() >= 1) {
             sb.setLength(sb.length()-1);
         }
-//        System.out.println(sb.toString());
-//        sb.append("aaa");
         return sb.toString();
     }
 

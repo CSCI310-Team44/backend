@@ -27,10 +27,8 @@ public class BookingService {
                 dateTime,
                 false
         );
-        System.out.println(booking.getUserId());
-        System.out.println(center);
-        System.out.println(dateTime);
-        if(vs.decrementVacancyIfNotEmpty(center, dateTime) == -1) {
+
+        if(vs.decrementVacancyIfNotZero(center, dateTime) == -1) {
             booking.setWaitList(true);
         }
         br.save(booking);
@@ -42,7 +40,7 @@ public class BookingService {
 
         // If not wait-listed, increment vacancy and notify other users
         if(!tbDeleted.isWaitList()) {
-            vs.incrementVacancyIfNotFull(center, dateTime);
+            vs.incrementVacancyIfNotMax(center, dateTime);
             ns.notifyVacancy(center, dateTime);
         }
 

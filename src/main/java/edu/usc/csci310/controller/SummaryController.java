@@ -1,12 +1,10 @@
 package edu.usc.csci310.controller;
 
 import edu.usc.csci310.model.Booking;
-import edu.usc.csci310.model.Vacancy;
 import edu.usc.csci310.repository.BookingRepository;
 import edu.usc.csci310.repository.VacancyRepository;
 import edu.usc.csci310.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,7 +63,7 @@ public class SummaryController {
     public List<String> notifyWaitlist(
             @RequestParam(value = "userid") long userId
     ) {
-        List<Vacancy> avilable = vr.findUserWaitListBecomesAvailable(userId);
+        List<edu.usc.csci310.model.Vacancy> avilable = vr.findUserWaitListBecomesAvailable(userId);
 
         System.out.println(avilable.get(0).getTimeslot());
 

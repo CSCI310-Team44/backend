@@ -34,7 +34,7 @@ public interface VacancyRepository extends CrudRepository<Vacancy, Long> {
             value = "SELECT * FROM VACANCY v " +
                     "INNER JOIN BOOKING b " +
                     "ON b.reccenterid = v.reccenterid AND b.timeslot = v.timeslot " +
-                    "WHERE b.userid = ?1 AND v.numvacant > 0 AND b.timeslot > current_timestamp ",
+                    "WHERE b.userid = ?1 AND b.iswaitlist = TRUE AND v.numvacant > 0 AND b.timeslot > current_timestamp ",
             nativeQuery = true)
     List<Vacancy> findUserWaitListBecomesAvailable(
             Long userId
