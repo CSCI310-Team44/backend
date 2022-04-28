@@ -72,7 +72,7 @@ public class BookingController {
      */
     @GetMapping("book")
     // TODO: Add JWT login validation
-    public ResponseEntity<Void> bookRecCenter(long userid, int center, String datetime) {
+    public String bookRecCenter(long userid, int center, String datetime) {
         // Convert date string to Java 8
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(datetime, dtf);
@@ -80,10 +80,10 @@ public class BookingController {
         boolean result = bs.createBookingIfNotExist(userid, center, localDateTime);
 
         if(result) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return "success";
         }
         else {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return "fail";
         }
     }
 }
