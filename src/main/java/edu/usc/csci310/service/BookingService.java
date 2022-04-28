@@ -46,7 +46,7 @@ public class BookingService {
     public boolean createBookingIfNotExist(long userid, int center, LocalDateTime dateTime) {
         Booking found = br
                 .findByUserIdAndRecCenterIdAndTimeslot(userid, center, dateTime);
-        if(found != null) {
+        if(found == null) {
             createBooking(userid, center, dateTime);
             return true;
         }
