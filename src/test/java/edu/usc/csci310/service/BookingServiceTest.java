@@ -4,8 +4,6 @@ import edu.usc.csci310.model.Booking;
 import edu.usc.csci310.model.Vacancy;
 import edu.usc.csci310.repository.BookingRepository;
 import edu.usc.csci310.repository.VacancyRepository;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +55,7 @@ public class BookingServiceTest {
      */
     @Test
     public void addBookingWhenVacancyZero() {
-        bs.addBooking(1_000_000_001, 0, zeroDateTime);
+        bs.createBooking(1_000_000_001, 0, zeroDateTime);
 
         Vacancy vacancy = vr.findByRecCenterIdAndTimeslot(0, zeroDateTime);
         assertNotNull(vacancy);
@@ -77,7 +75,7 @@ public class BookingServiceTest {
      */
     @Test
     public void addBookingWhenVacancyNotZero() {
-        bs.addBooking(1_000_000_001, 0, maxDateTime);
+        bs.createBooking(1_000_000_001, 0, maxDateTime);
 
         Vacancy vacancy = vr.findByRecCenterIdAndTimeslot(0, maxDateTime);
         assertNotNull(vacancy);

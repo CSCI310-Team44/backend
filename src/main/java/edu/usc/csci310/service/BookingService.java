@@ -18,7 +18,7 @@ public class BookingService {
     @Autowired
     private VacancyService vs;
 
-    public void addBooking(long userId, int center, LocalDateTime dateTime) {
+    public void createBooking(long userId, int center, LocalDateTime dateTime) {
 
         Booking booking = new Booking(
                 0L,
@@ -32,6 +32,27 @@ public class BookingService {
             booking.setWaitList(true);
         }
         br.save(booking);
+    }
+
+    /**
+     * Creates a new booking for the current user at center at datetime
+     * if one does not already exist .
+     *
+     * @param userid
+     * @param center
+     * @param dateTime
+     * @return {@code true} on success, {@code false} on fail.
+     */
+    public boolean createBookingIfNotExist(long userid, int center, LocalDateTime dateTime) {
+        Booking found = br
+                .findByUserIdAndRecCenterIdAndTimeslot(userid, center, dateTime);
+        if(found != null) {
+            createBooking(userid, center, dateTime);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public void deleteBooking(long userId, int center, LocalDateTime dateTime) {

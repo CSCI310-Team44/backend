@@ -4,6 +4,8 @@ import edu.usc.csci310.model.Vacancy;
 import edu.usc.csci310.repository.VacancyRepository;
 import edu.usc.csci310.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,14 +68,22 @@ public class BookingController {
      * @param userid
      * @param center
      * @param datetime yyyy-MM-dd HH:mm
+     * @return OK on success, CONFLICT on fail.
      */
     @GetMapping("book")
     // TODO: Add JWT login validation
-    public String bookRecCenter(long userid, int center, String datetime) {
+    public ResponseEntity<Void> bookRecCenter(long userid, int center, String datetime) {
         // Convert date string to Java 8
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(datetime, dtf);
-        bs.addBooking(userid, center, localDateTime);
-        return "Success";
+
+        boolean result = bs.createBookingIfNotExist(userid, center, localDateTime);
+
+        if(result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 }
