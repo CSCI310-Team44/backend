@@ -77,6 +77,11 @@ public class BookingController {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(datetime, dtf);
 
+        // Disallow booking in the past
+        if(localDateTime.isBefore(LocalDateTime.now())) {
+            return "fail1";
+        }
+
         boolean result = bs.createBookingIfNotExist(userid, center, localDateTime);
 
         if(result) {
